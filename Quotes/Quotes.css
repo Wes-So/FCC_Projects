@@ -1,69 +1,57 @@
-//test
-
- 
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Poiret+One');
 
-body {
-	padding:200px;
+body{
 	text-align: center;
-	background-image: url("https://images.unsplash.com/photo-1426020744253-568cd6345e93?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&cs=tinysrgb&s=01d228ab09fe4847cf0eedcf468b5f43");
-	background-size:no-repeat;
+	background-color:#f7d791;
 }
 
+#footer{
+	text-align: center;
+	padding-top:10px;
+}
 
+#main{
+	margin-top: 200px;
+}
+
+.well{
+	margin:auto;
+	width:50%;
+}
 
 #quote {
 	padding-top: 30px;
 	font-family: 'Poiret One', cursive;
-	font-size: 30px;	
-	font-weight: 	bold;
+	font-size: 25px;	
+	font-weight: bold;
+	-webkit-transition:-webkit-transform 50s;	
+}
+
+#sample{
+	transition:transform 2s;
+	-webkit-transition:-webkit-transform 50s;
 }
 
 #author {
-	font-size: 30px;
+	font-size: 20px;
 	font-family: 'Open Sans Condensed', sans-serif;
 	text-align: right;
 }
-
-.custom-well{
-	height:70%;
-	width: 70%;
-	margin-top: auto;
-	margin-bottom: auto;
-	margin-left: auto;
-	margin-right: auto;
-
-}
-
+ 
 .actions {
 	padding:50px;
 }
 
 .fa-cog{
 	color:#96ad01;
+	
+}
+
+i:hover{
+	opacity: 0.8;
 }
 
 #clickableAwesomeFont {
     cursor: pointer
 }
 
-blockquote {
-  /*background: #f9f9f9;*/
-  border-left: 10px solid #ccc;
-  margin: 1.5em 10px;
-  padding: 0.5em 10px;
-  quotes: "\201C""\201D""\2018""\2019";
-}
-
-blockquote:before {
-  color: #ccc;
-  content: open-quote;
-  font-size: 4em;
-  line-height: 0.1em;
-  margin-right: 0.25em;
-  vertical-align: -0.4em;
-}
-
-blockquote p {
-  display: inline;
-}

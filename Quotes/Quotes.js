@@ -40,7 +40,6 @@ var quotes= [
 
 
 function getNextQuote() {
-	//var obj = JSON.parse(quotes);
     var index = Math.floor((Math.random() * quotes.length) );    
     document.getElementById("quote").textContent = quotes[index].quote;  
     document.getElementById("author").textContent = '-' + quotes[index].author;
