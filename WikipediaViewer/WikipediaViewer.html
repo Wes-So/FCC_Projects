@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Wikipedia Viewer</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">	
+	<link rel="stylesheet" type="text/css" href="WikipediaViewer.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="WikipediaViewer.js"></script>
+</head>
+<body>
+	<div id="topdiv" class="container topspace center">
+			<!-- <img src="https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcSSXnIG3vaE05uyYvcb4IGqU-5BIyWLvdkYgQOCviKLL3NFIQCc" class="img-rounded"> -->
+			<p id="random" class="main"><a target="_blank" href="https://en.wikipedia.org/wiki/Special:Random">Click here for a random article</a></p>
+			<a id="search" href="#"><i class="fa fa-search fa-3x" aria-hidden="true"></i></a>
+	 		<div style="display: none" id="form" class="row padding">
+				<div id="inputgroup" class="input-group">
+	 				<input id="input" type="text" class="form-control"></input><span class="input-group-addon" id="remove"><span class="glyphicon glyphicon-remove"></span></span>
+	 			</div>
+			</div>
+			<p id="clickSearch" class="main">Click icon to search</p>
+	</div>
+</body>
+</html>
+
+<!-- https://en.wikipedia.org/w/api.phpa?action=query&titles=Albert%20Einstein&prop=info&format=jsonfm -->

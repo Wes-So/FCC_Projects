@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css?family=Scope+One');
+@import url('https://fonts.googleapis.com/css?family=Lato:400i|Roboto:900');
+@import url('https://fonts.googleapis.com/css?family=Bangers');
+.main {
+
+	font-family: 'Bangers', cursive;
+	font-size: 30px;
+
+}
+
+.desc {
+	font-family: 'Lato',sans-serif;
+}
+
+.title {
+	font-family: 'Roboto', sans-serif;
+}
+
+
+body {
+/*	display: inline-block;
+	text-align: center; */
+	font-family: 'Scope One', serif;
+	margin: auto; 
+	background-color: rgb(236,237,213);
+}
+
+.highlight{ 
+	border-left-color:#ff9933;
+}
+
+.topspace{
+	padding:300px;
+}
+
+.spacebetween{
+	padding:20px;
+}
+
+.center {    
+    text-align: center;
+	margin: auto;
+}
+
+.padding {
+	padding-top: 10px;
+    padding-right: 10px;
+    padding-bottom: 5px;
+    padding-left: 10px;
+	
+}
+
+p {
+	padding:10px;
+}

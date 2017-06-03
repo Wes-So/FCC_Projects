@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css?family=Rubik+One');
+@import url('https://fonts.googleapis.com/css?family=Raleway');
+ 
+.upper-padding {
+  padding-top: 30px;
+}
+
+.background {
+	background-color:#f7d791;
+}
+
+.padding {
+	padding-top: 50px;
+	padding-bottom: 20px;
+}
+
+.centered {
+	text-align: center;
+}
+
+.quote {
+	font-style:italic;
+}
+
+.author {
+	color:#917557;
+}
+
+h1 {
+	font-family: 'Rubik One', sans-serif; 
+}
+
+ 
+body {
+	font-family: 'Raleway',sans-serif;
+}
