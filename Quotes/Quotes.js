@@ -36,19 +36,29 @@ var quotes= [
 			 {"quote": "Only when you can be extremely pliable and soft can you be extremely hard and strong.","author":" Zen Proverb"} 
 ];
 		
- 
+
+
+function getRandomColor(){
+	var colors =["#914848", "#917848","#8a9148","#549148","#48917b","#487d91","#486191","#6b4891","#894891","#91484f"]; 
+	return colors[Math.floor((Math.random() * colors.length))];
+}
 
 
 function getNextQuote() {
-    var index = Math.floor((Math.random() * quotes.length) );    
-    document.getElementById("quote").textContent = quotes[index].quote;  
-    document.getElementById("author").textContent = '-' + quotes[index].author;
-    
+	var color = getRandomColor(); 
+	$("body").css('background-color', color);
+	$("#quote,#author, .fa-cog").css('color',color);
+    var index = Math.floor((Math.random() * quotes.length));  
+    $("#quote,#author").hide();
+    $("#quote").text(quotes[index].quote);
+    $("author").text( '-' + quotes[index].author);
+    $("#quote,#author").fadeIn(1500);    
 };
 
-function tweet(){
-	console.log( document.getElementById("quote").textContent + ' ' +  document.getElementById("author").textContent + ' #quotes');
-	var text = '"' + document.getElementById("quote").textContent + '" ' +  (document.getElementById("author").textContent).replace('-','');
+function tweet(){	
+	var quote = $("#quote").text();
+	var author = $("#author").text();	
+	var text = '"' + quote + '" ' +  (author).replace('-','');
 	var url = "https://twitter.com/intent/tweet?text=";
 	window.open(url + text + '&hashtags=quotes');
 }

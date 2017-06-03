@@ -2,7 +2,7 @@
 
 body{
 	text-align: center;
-	background-color:#f7d791;
+	background-color:#914848;
 }
 
 #footer{
@@ -20,6 +20,7 @@ body{
 }
 
 #quote {
+	color:#914848;
 	padding-top: 30px;
 	font-family: 'Poiret One', cursive;
 	font-size: 25px;	
@@ -33,6 +34,7 @@ body{
 }
 
 #author {
+	color:#914848;
 	font-size: 20px;
 	font-family: 'Open Sans Condensed', sans-serif;
 	text-align: right;
@@ -43,7 +45,7 @@ body{
 }
 
 .fa-cog{
-	color:#96ad01;
+	color:#914848;
 	
 }
 
