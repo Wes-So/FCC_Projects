@@ -1,11 +1,10 @@
 @import url('https://fonts.googleapis.com/css?family=Scope+One');
 @import url('https://fonts.googleapis.com/css?family=Lato:400i|Roboto:900');
 @import url('https://fonts.googleapis.com/css?family=Bangers');
-.main {
 
+.main {
 	font-family: 'Bangers', cursive;
 	font-size: 30px;
-
 }
 
 .desc {
@@ -16,17 +15,42 @@
 	font-family: 'Roboto', sans-serif;
 }
 
-
-body {
-/*	display: inline-block;
-	text-align: center; */
-	font-family: 'Scope One', serif;
-	margin: auto; 
-	background-color: rgb(236,237,213);
+a{
+	color: white;
 }
 
-.highlight{ 
+p {
+	padding:10px;
+}
+
+body{ 
+	font-family: 'Scope One', serif;
+	margin: auto; 
+	background-color: #3866d1;
+	color:white;
+} 
+
+#inputgroup{
+	-webkit-border-radius: 15px;
+	border-radius: 15px;
+	-moz-border-radius: 15px;
+	margin:auto;
+	width:200px;
+	padding-bottom:15px;
+}
+
+.fa-search{
+	padding-bottom:15px;
+}
+
+.list-group-item:hover{
 	border-left-color:#ff9933;
+	border-left-style: solid;
+	border-left-width: 5px;
+}
+
+.list-group-item{
+	margin-bottom: 10px;
 }
 
 .topspace{
@@ -41,15 +65,5 @@ body {
     text-align: center;
 	margin: auto;
 }
+ 
 
-.padding {
-	padding-top: 10px;
-    padding-right: 10px;
-    padding-bottom: 5px;
-    padding-left: 10px;
-	
-}
-
-p {
-	padding:10px;
-}
