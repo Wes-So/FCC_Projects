@@ -10,7 +10,7 @@ var fahrenheit = 'Fahrenheit';
 var celcius = 'Celcius';
 var zip = 0;
 var isCelcius = false;
-//var sample = {"coord":{"lon":-105.07,"lat":39.82},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04n"}],"base":"stations","main":{"temp":50.81,"pressure":1020,"humidity":40,"temp_min":46.4,"temp_max":57.2},"visibility":16093,"wind":{"speed":6.93,"deg":140},"clouds":{"all":75},"dt":1490402160,"sys":{"type":1,"id":602,"message":0.0054,"country":"US","sunrise":1490446502,"sunset":1490491066},"id":5412199,"name":"Arvada","cod":200};
+var sample = {"coord":{"lon":-105.07,"lat":39.82},"weather":[{"id":803,"main":"Clouds","description":"broken clouds","icon":"04n"}],"base":"stations","main":{"temp":50.81,"pressure":1020,"humidity":40,"temp_min":46.4,"temp_max":57.2},"visibility":16093,"wind":{"speed":6.93,"deg":140},"clouds":{"all":75},"dt":1490402160,"sys":{"type":1,"id":602,"message":0.0054,"country":"US","sunrise":1490446502,"sunset":1490491066},"id":5412199,"name":"Arvada","cod":200};
 var sample;
 var appID = 'e30174d4b2d3a5b835b5ad9080f5fe84';
 var parentUrl = 'http://api.openweathermap.org/data/2.5/weather?';
@@ -21,6 +21,24 @@ initialize();
 function initialize() { 
     getLocation();
 }
+
+function getLocation() {
+    ajax_get(locUrl, function(data){
+        console.log(data);
+        getWeather(data);
+    }); 
+}
+
+function getWeather(data){
+    zip = data.zip_code;
+    console.log(zip);
+    parentUrl = parentUrl + 'zip=' + zip + '&units=imperial&APPID=' + appID; 
+    parseResponse(sample);
+    // ajax_get(parentUrl, function(data) {
+    //     parseResponse(data);
+    // });   
+}
+
 
 //communicate with apis
 function ajax_get(url, callback) {
@@ -66,10 +84,7 @@ metric.addEventListener("click",  function(){
         isCelcius = true;
     }
 
-});
-
-
-
+}); 
 
 function toUpperFirstLetter(description){
     var formattedDesc = '';
@@ -88,51 +103,18 @@ function toUpperFirstLetter(description){
     }
 
     return formattedDesc;
-}
-
- 
+} 
 
 function toCelcius(fTemp){
     var raw = ((fTemp - 32) * 5)/9;
-    return parseFloat(Math.round(raw * 100 / 100).toFixed(2));
+    return parseFloat(raw.toFixed(2));
 }
 
 
-function getLocation(position) {
-    ajax_get(locUrl, function(data){
-        getWeather(data);
-    }); 
-}
 
-function getWeather(data){
-    zip = data.zip_code;
-    console.log(zip);
-    parentUrl = parentUrl + 'zip=' + zip + '&units=imperial&APPID=' + appID; 
 
-    ajax_get(parentUrl, function(data) {
-        parseResponse(data);
-    });   
-}
 
-// function errorHandler(err) {
-//     if(err.code == 1) {
-//         alert("Error: Access is denied!");
-//     } else if( err.code == 2) {
-//         alert("Error: Position is unavailable!");
-//      }
-// }
-            
-// function getLocation() {
-//      ;
-//     if(navigator.geolocation) {
-//       // timeout at 60000 milliseconds (60 seconds)
-//         var options = {timeout:60000};
-//         navigator.geolocation.getCurrentPosition( showLocation,  errorHandler, options); 
-//     } else {
-//         alert("Sorry, browser does not support geolocation!");
-//     }
-     
-// }
+ 
 
 
 

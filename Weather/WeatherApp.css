@@ -16,3 +16,8 @@ body {
 .center {
     margin: auto; 
 }
+
+.panel{
+	width:500px;
+	margin:auto;
+}
