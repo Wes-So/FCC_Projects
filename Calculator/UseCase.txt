@@ -1,0 +1,20 @@
+
+Start usecases:
+	- operators are not allowed for the first input
+	-clicking AC or CE at this point will maintain zero values in the screen
+
+AC usecases:
+	- input and summary screen should display zero
+	- all variables set to default values
+
+CE usecases
+	- if summary is zero  do nothing
+	- if summary ends with an operator, remove operator
+	- else remove the last numeric value
+
+Digits usecases:
+	- if summary is empty, operators or the zero digit are not allowed for the first input
+	- else, summary displays typed key + previous and input displays typed key
+
+Equal usecases:
+	
