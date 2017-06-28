@@ -1,0 +1,16 @@
+body{
+	margin:auto;
+	text-align:center;
+}
+
+ button{ 
+ 	background:none;border:none; 
+ }
+
+i{
+    cursor: pointer
+}
+
+span {
+	padding:10px;
+}
