@@ -1,16 +1,50 @@
+@import url('https://fonts.googleapis.com/css?family=Monoton|Raleway');
 body{
-	margin:auto;
-	text-align:center;
+  margin:auto;
+  text-align:center;
+  background-color:#2d2b2b;
+  color:white;
 }
 
- button{ 
- 	background:none;border:none; 
+button{ 	
+  background:none;
+  border:solid; 
+  border-color:lightgreen; 
+  height: 300px;
+  width: 300px;
+  border-radius: 50%;
+  padding-top:20px;
+  font-family: 'Raleway', sans-serif; 
  }
 
-i{
-    cursor: pointer
+button:focus{
+	outline:0;
 }
 
-span {
-	padding:10px;
+i{
+  cursor: pointer
 }
+
+span{
+  padding:10px;
+
+}
+
+h1{
+  padding-top:10px;
+  padding-bottom:25px;
+  font-family: 'Monoton', cursive;
+  font-size: 79px;
+}
+
+.divtimer{
+	padding-top:10px;
+}
+
+.timer{
+  font-size:60px;
+}
+
+.adjvalue{
+	font-size:30px;
+ }

@@ -6,13 +6,8 @@ $(function(){
 	var isSession = true;
 	var start = new Date();
  	
- 	//set default session/break values
- 	
- 	$("#duration").text(DEF_SESSION);
-	$("#sessionValue").text(DEF_SESSION);
-	$("#breakValue").text(DEF_BREAK);
-	start.setMinutes(DEF_SESSION);
-	start.setSeconds(0);
+ 	//set default session/break values 	
+ 	setDefaults();
 
 	//main function that handles the countdown feature
 
@@ -24,16 +19,36 @@ $(function(){
 
  		if(start.getMinutes() == 0 && start.getSeconds() == 0){
  			clearInterval(intervalId);
+ 			isSession ? startBreak() : startSession();
  		}
 
 		displaySeconds = (start.getSeconds()).toString();
 		displayTime = start.getMinutes() + ":" + displaySeconds.padStart(2,"0");
 		$("#duration").text(displayTime);
-		console.log(displayTime);
 	}
 
+	function startTimer(val){
+		$("#duration").text(val);
+		start.setMinutes(val);
+		start.setSeconds(0);		
+		intervalId = setInterval(countDown,1000); 
+		isRunning = true;
+	}
 
+	function startSession(){
+		$("#mode").text("Session");
+		var val = $("#sessionValue").text();		
+		isSession = true;
+		startTimer(val);
+	}
 
+	function startBreak(){		
+		$("#mode").text("Break");
+		var val = $("#breakValue").text()				
+		isSession = false;
+		startTimer(val);
+	}
+ 
 	$("#main").click(function(){		
 		if(isRunning){
 			clearInterval(intervalId);	
@@ -44,36 +59,66 @@ $(function(){
 		}
 	})
 
-
-
-
-
-
 	//code that handles adjustment of time for break/sessions
-
 	$("#breakReduce").click(function(){
-		var value = Number($("#breakValue").text());
-		if(value > 1){
-			$("#breakValue").text(value - 1);
+		if(!isRunning){
+		  var value = Number($("#breakValue").text());
+		  if(value > 1)
+		  	value -= 1;
+		  setBreakValue(value);
 		}
 	})
 
 	$("#breakIncrease").click(function(){ 
-		var value = Number($("#breakValue").text());
-		$("#breakValue").text(value + 1);
-		
-	})
-
-	$("#sessionReduce").click(function(){
-		var value = Number($("#sessionValue").text());
-		if(value > 1){
-			$("#sessionValue").text(value - 1);
+		if(!isRunning){
+     	  var value = Number($("#breakValue").text()) + 1;
+		  setBreakValue(value);
 		}
 	})
 
+
+	function setBreakValue(val){ 
+		$("#breakValue").text(val);
+		if(!isSession){						
+			$("#duration").text(val); 
+			console.log("setting break value");
+			start.setMinutes(val);
+			start.setSeconds(0);
+		}
+	}
+
+	$("#sessionReduce").click(function(){
+		if(!isRunning){
+		  var value = Number($("#sessionValue").text()) ;
+		  if(value > 1)
+		 	value -= 1;
+		  setSessionValue(value);
+		}
+	})	
+
 	$("#sessionIncrease").click(function(){ 
-		var value = Number($("#sessionValue").text());
-		$("#sessionValue").text(value + 1);
-		
+		if(!isRunning){
+	      var value = Number($("#sessionValue").text()) + 1; 		  
+ 		  setSessionValue(value);
+		}
 	})
+
+	function setSessionValue(val){ 
+		$("#sessionValue").text(val);		
+		if(isSession){						
+			$("#duration").text(val); 
+			console.log("setting start value");
+			start.setMinutes(val);
+			start.setSeconds(0);
+		}
+	}
+
+	//utility functions
+	function setDefaults(){
+	  $("#duration").text(DEF_SESSION);
+	  $("#sessionValue").text(DEF_SESSION);
+	  $("#breakValue").text(DEF_BREAK);
+	  start.setMinutes(DEF_SESSION);
+	  start.setSeconds(0);
+	}
 });
