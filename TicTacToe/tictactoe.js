@@ -1,11 +1,7 @@
 $(function(){
    
-  var text = "Would you like to be X or O?";
-  // var onePchoice = "X";
-  // var twoPchoice = "O";
-  var is1P = true;
-  // var onePScore = 0;
-  // var twoPScore = 0;
+  var text = "Would you like to be X or O?"; 
+  var is1P = true; 
   var isStopped = false;
   var player1;
   var player2;
@@ -14,12 +10,9 @@ $(function(){
 
   function initialize(){
   	player1 = createPlayer(1);
-  	player2 = createPlayer(2);
-	// onePchoice = "X";
-	// twoPchoice = "O";
-	is1P = true;
-	// onePScore = 0;
-	// twoPScore = 0;  
+  	player2 = createPlayer(2); 
+	
+	is1P = true;  
 	isStopped=false;
 	
 	$("#first").css('display','block');  
@@ -63,19 +56,12 @@ $(function(){
   //SECOND INTERFACE
   $("#X").click(function(){
   	updatePlayerVal("X","O");  	
-  	showBoard();
-  	//to be deleted
-  	// onePchoice = "X";
-  	// twoPchoice = "O";
+  	showBoard(); 
   }) 
 
   $("#O").click(function(){
   	updatePlayerVal("O","X");  	
-  	showBoard();
-  	//to be deleted
-  	// onePchoice = "O"
-  	// twoPchoice = "X";
-  	
+  	showBoard(); 
   })
 
   function updatePlayerVal(x, y){
@@ -84,21 +70,19 @@ $(function(){
   }
 
   //THIRD INTERFACE
-  $(".square").click(function(){ 
-  	console.log(isStopped);
+  $(".square").click(function(){  
     if($("#" + this.id ).text() === "" && !isStopped){
 	  var currentPlayer = is1P ? player1 : player2;
-	  $("#" + this.id ).text(currentPlayer.val);
-	  
+	  $("#" + this.id ).text(currentPlayer.val);	  
 	  if(isWinner(this.id,currentPlayer.val)){
 	    updateScores();
  	    message = currentPlayer.name + " wins. Congratulations!!!";	  	 
 	  	endOfRound(message);
-	  } else if(allFilled()){
-	     
+	  } else if(allFilled()){	     
 	    message = "We got a draw..."; 	
  	  	endOfRound(message);
-	  } 	  	
+	  } 
+	  	  	
 	  switchVal();	  	 
   	}
   })
