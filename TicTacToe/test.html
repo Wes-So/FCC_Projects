@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Test</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="test.js"></script>
+	<link rel="stylesheet" type="text/css" href="test.css">	
+</head>
+<body>
+<div class="container">
+<table>
+	<tr>
+		<td>Player1</td>
+		<td></td>
+		<td>Player2</td>
+	</tr>
+</table>
+<!--   <div class="row">
+    <div id="turns">test</div>  
+    <div id="turns right-align">test2</div>   	
+  </div> -->
+  <div class="outer"> 
+    <div class="inner"> 
+      <div id="first" class="center">
+		<p>How do you want to play?</p>
+		<div class="row">
+		<button id="1p" disabled>One Player</button><button id="2p">Two Player</button>	
+	    </div>		
+	  </div>
+	  <div id="second" class="center">		
+		 <p id="chooseText">Would you like to be X or O?</p>
+		 <div class="row">
+			 <button id="X">X</button><button id="O">O</button>	
+		 </div>
+		<button id="back">Back</button>
+	  </div> 
+	  <div id="board"> 	   
+	   <div id="message">
+  	     <p>test message</p> 
+	    </div> 	
+	    <div id="table">
+	    <table class="transparent">
+	      <tr id="row1">
+	        <td class="square bottom right" id="1"></td>
+	        <td class="square bottom right" id="2"></td>
+	        <td class="square bottom  " id="3"></td>
+	      </tr>			      
+	      <tr id="row2">
+	        <td class="square bottom right" id="4"></td>
+	        <td class="square bottom right" id="5"></td>
+	        <td class="square bottom  " id="6"></td>
+	      </tr>
+	      <tr id="row3">
+	        <td class="square right" id="7"></td>
+	        <td class="square right" id="8"></td>
+	        <td class="square  " id="9"></td>
+	      </tr>
+	    </table>	    	
+	    </div> 
+	  </div>
+	</div>
+  </div>
+</div>
+</body>
+</html>
