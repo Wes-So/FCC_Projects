@@ -31,16 +31,31 @@ button:hover{
 
 #message{
   position: relative;
-  top: 94px;
+  top: 120px;
   left: 0; 
   width: 100%;
   height: 100%;
   z-index: 10; 
 }
 
-#table{
+/*#table{
   position:absolute;
-  top:110px;
+  top:191px;
+}*/
+
+#player2{
+  padding-left:510px;
+  color:blue;
+}
+
+#player1{
+ color: red;
+}
+
+.player{
+  color:black;
+  padding-left: 146px;
+  padding-bottom: 10px;
 }
 
 .transparent{
@@ -102,4 +117,20 @@ button:hover{
     text-align: center;
 }
 
- 
+.displayTurns
+{
+  color:black;
+    float:left;
+    width:150px;
+    padding-top:2px;
+    padding-left: 2px;  
+    text-align: center;
+}
+
+.visible {
+  visibility:visible;
+}
+
+.not-visible {
+  visibility:hidden;
+ }

@@ -9,9 +9,16 @@
 	<link rel="stylesheet" type="text/css" href="tictactoe.css">	
 </head>
 <body>
-<div class="container"> 
+<div class="container">  
+    <table>
+	<tr>
+	  <td class="player" id="player1">Player1</td>
+	  <td class="player"></td>
+	  <td class="player" id="player2">Player2</td>
+	</tr>
+    </table>
 	<div class="outer">
-		<div class="row">	
+		<div id="scores" class="row">	
 	  	  <div class="displayScores"><p id="onePscore">0</p></div>
 	  	  <div class="displayScores"><p id="twoPscore">0</p></div>
 	  	  <div class="displayScores"><button id="reset">Reset All</button></div>
