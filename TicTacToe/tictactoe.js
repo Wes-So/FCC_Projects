@@ -1,7 +1,7 @@
 $(function(){
    
   var text = 'Would you like to be X or O?'; 
-  var is1P = true; 
+  // var is1P = true; 
   var isStopped = false;
   var player1;
   var player2;
@@ -13,6 +13,7 @@ $(function(){
   function initialize(){
   	player1 = createPlayer(1);
   	player2 = createPlayer(2); 
+    getFirstPlayer()
 	
 	  is1P = true;  
 	  isStopped=false;
@@ -22,22 +23,33 @@ $(function(){
 	  $('#message').css('display','none');
     $('#board').css('display','none');
     $('#scores').addClass('not-visible');
-    $('.player').hide();
-    $('#onePscore').text(player1.score);
-    $('#twoPscore').text(player2.score);	
-    
+    $('#player1').addClass('not-visible');
+    $('#player2').addClass('not-visible');
+    redisplayScores();    
     clearCells();
   } 
 
   function createPlayer(name) {
   	return {
+      id: name,
     	name : 'Player ' + name,
   		score : 0,
   		val : '' ,
-      turn: $('#player' + name)
-      }
-  	}
+      turn: $('#player' + name),
+      isTurn:false
+    }
+  } 
    
+  function getFirstPlayer(){
+    var num = Math.floor(Math.random() * 2) + 1; 
+    var firstPlayer = num == 1?player1:player2;
+    setIsTurnToTrue(firstPlayer); 
+    getCurrentAndLastPlayers(); 
+  }
+
+  function setIsTurnToTrue(player){
+    player.isTurn = true;
+  }
 
   $('#reset').click(function(){
   	initialize(); 
@@ -50,8 +62,8 @@ $(function(){
   //FIRST INTERFACE
   $('#1p').click(function(){ 
   	player2.name = 'CPU';
-	$('#chooseText').text(text);
-	switchMode(); 
+	  $('#chooseText').text(text);
+	  switchMode(); 
   }) 
 
   $('#2p').click(function(){
@@ -77,31 +89,23 @@ $(function(){
 
   //THIRD INTERFACE
   $('.square').click(function(){  
-    if($('#' + this.id ).text() === '' && !isStopped){
-      getCurrentAndLastPlayers();	  
+    if($('#' + this.id ).text() === '' && !isStopped){       
 	    $('#' + this.id ).text(currentPlayer.val);	  
 	    if(isWinner(this.id,currentPlayer.val)){
 	      updateScores();
  	      message = currentPlayer.name + ' wins. Congratulations!!!';	  	 
 	  	  endOfRound(message);
-	   } else if(allFilled()){	     
+	    } else if(allFilled()){	     
 	      message = 'We got a draw...'; 	
  	  	  endOfRound(message);
-	   } else {
+	    } else {
         switchVal();
-     } 
+      } 
   	}
   })
 
   function updateScores(){
-  	var score = 0;
-  	if(is1P){
-  		score = player1.score;
-  		player1.score = score  + 1;
-  	} else {
-  		score = player2.score;
-  		player2.score = score + 1;
-  	}
+    currentPlayer.score = currentPlayer.score + 1;
   }
 
   function endOfRound(message){
@@ -110,9 +114,8 @@ $(function(){
 	   $('#message').text(message);
 	   $('#message').toggle();
 	   $('table').addClass('transparent');
-	   $('#onePscore').text(player1.score);
-      $('#twoPscore').text(player2.score);    			
-   	    setTimeout(function() {
+     redisplayScores();			
+     setTimeout(function() {
           $('#message').toggle(); 
      	      clearCells();
      	      isStopped=false
@@ -122,6 +125,10 @@ $(function(){
 	  }, 2000);	
   }
  
+  function redisplayScores(){
+    $('#onePscore').text(player1.score);
+    $('#twoPscore').text(player2.score);
+  }
 
   //logic code
   function isWinner(id,val){
@@ -159,7 +166,10 @@ $(function(){
   }
 
   function switchVal(){
-    is1P = is1P ? false : true; 
+    currentPlayer = player1.isTurn ? player2 : player1;    
+    setIsTurnToTrue(currentPlayer)
+    lastPlayer = currentPlayer.id == 1 ? player2 : player1;
+    lastPlayer.isTurn = false;
     getCurrentAndLastPlayers();
     showPlayerName();    
   }
@@ -181,12 +191,14 @@ $(function(){
   	var one = $('#' + cells[idx].id ) ;
   	var two = $('#' + cells[idx + icr].id ) ;
   	var three = $('#' + cells[idx + icr + icr].id);
-	var result = one.html() === val && two.html() === val && three.html() === val;
+	  var result = one.html() === val && 
+                 two.html() === val && 
+                 three.html() === val;
 
-	if(result) 
-		highlightCells(one, two, three);	 
+	  if(result) 
+		  highlightCells(one, two, three);	 
 
-	return result;  	 
+	  return result;  	 
   } 
 
   function allFilled() {
@@ -211,6 +223,7 @@ $(function(){
   	for(var i = 0; i<cells.length; i++){ 
    		$('#' + cells[i].id ).text('').css('color','white');
   	} 	
+
   }
 
   function switchMode(){
@@ -222,20 +235,22 @@ $(function(){
   	$('#second').toggle();
    	$('#board').toggle();  
     $('#scores').removeClass('not-visible');
-    $('#scores').addClass('visible');  
+    $('#scores').addClass('visible'); 
     showPlayerName();
   }  
 
 
   function getCurrentAndLastPlayers(){
-    currentPlayer = is1P ? player1 : player2;
-    lastPlayer = is1P ? player2 : player1;
+    currentPlayer = player1.isTurn ? player1 : player2;
+    lastPlayer = player1.isTurn ? player2 : player1;
   }
 
   function showPlayerName(){
     getCurrentAndLastPlayers();
-    currentPlayer.turn.show("2000");
-    lastPlayer.turn.hide("5000");
+    // currentPlayer.turn.show("2000");
+    // lastPlayer.turn.hide("5000");
+    currentPlayer.turn.addClass("visible").removeClass('not-visible');
+    lastPlayer.turn.removeClass('not-visible').addClass('not-visible');
   }
 
 })
