@@ -1,7 +1,6 @@
 $(function(){
    
   var text = 'Would you like to be X or O?'; 
-  // var is1P = true; 
   var isStopped = false;
   var player1;
   var player2;
@@ -201,14 +200,8 @@ $(function(){
 	  return result;  	 
   } 
 
-  function allFilled() {
-  	var cells = $('.square');
-  	for(var i = 0; i<cells.length; i++){ 
-  		var value = $('#' + cells[i].id ).html();
-  		if(value === '')
-  			return false; 
-  	}
-  	return true; 
+  function allFilled() { 
+    return  $(".square:empty").length === 0; 
   }
 
   //accessory functions
@@ -219,11 +212,9 @@ $(function(){
   }
 
   function clearCells(){
-   	var cells = $('.square');
-  	for(var i = 0; i<cells.length; i++){ 
-   		$('#' + cells[i].id ).text('').css('color','white');
-  	} 	
-
+    $('.square').map(function(){
+      $('#' + this.id).text(''); 
+    }) 
   }
 
   function switchMode(){
@@ -237,8 +228,7 @@ $(function(){
     $('#scores').removeClass('not-visible');
     $('#scores').addClass('visible'); 
     showPlayerName();
-  }  
-
+  } 
 
   function getCurrentAndLastPlayers(){
     currentPlayer = player1.isTurn ? player1 : player2;
@@ -247,10 +237,21 @@ $(function(){
 
   function showPlayerName(){
     getCurrentAndLastPlayers();
-    // currentPlayer.turn.show("2000");
-    // lastPlayer.turn.hide("5000");
     currentPlayer.turn.addClass("visible").removeClass('not-visible');
     lastPlayer.turn.removeClass('not-visible').addClass('not-visible');
+  }
+
+  function getBoard(){
+    var board = [];
+    $('.square').each(function(){      
+      var item = $('#' + this.id).text() ? $('#' + this.id).html() : this.id; 
+      board.push(item);
+    })
+    return board;
+  }
+
+  function getEmpties(board){
+    return board.filter(s => s != 'O' && s!='X');
   }
 
 })
