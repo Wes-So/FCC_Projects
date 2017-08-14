@@ -90,7 +90,7 @@ $(function(){
   $('.square').click(function(){  
     if($('#' + this.id ).text() === '' && !isStopped){       
 	    $('#' + this.id ).text(currentPlayer.val);	  
-	    if(isWinner(this.id,currentPlayer.val)){
+	    if(isWinning(getBoard(),currentPlayer.val)){
 	      updateScores();
  	      message = currentPlayer.name + ' wins. Congratulations!!!';	  	 
 	  	  endOfRound(message);
@@ -130,38 +130,56 @@ $(function(){
   }
 
   //logic code
-  function isWinner(id,val){
-  	switch(id) {
-  		case '1':
-  		  return checkHorizontal(0,val) || checkVertical(0,val) || checkDiagonal(0,4,val);
-  		  break;
-  		case '2':
-  		  return checkHorizontal(0,val) || checkVertical(1,val);
-  		  break;
-  		case '3':
-  		  return checkHorizontal(0,val) || checkVertical(2,val) || checkDiagonal(2,2,val);
-  		  break;
-  		case '4':
-  		  return checkHorizontal(3,val) || checkVertical(0,val);
-  		  break;
-  		case '5':
-  		  return checkHorizontal(3,val) || checkVertical(1,val) || checkDiagonal(2,2,val) || checkDiagonal(0,4,val);
-  		  break;  
-  		case '6':
-  		  return checkHorizontal(3,val) || checkVertical(2,val);
-  		  break;
-  		case '7':
-  		  return checkHorizontal(6,val) || checkVertical(0,val) || checkDiagonal(2,2,val);
-  		  break; 
-  		case '8':
-  		  return checkHorizontal(6,val) || checkVertical(1,val);
-  		  break;  		
-  		case '9':
-  		  return checkHorizontal(6,val) || checkVertical(2,val) || checkDiagonal(0,4,val);
-  		  break;  		
-  		default :
-  			return false; 
-  	} 
+  // function isWinner(id,val){
+  // 	switch(id) {
+  // 		case '1':
+  // 		  return checkHorizontal(0,val) || checkVertical(0,val) || checkDiagonal(0,4,val);
+  // 		  break;
+  // 		case '2':
+  // 		  return checkHorizontal(0,val) || checkVertical(1,val);
+  // 		  break;
+  // 		case '3':
+  // 		  return checkHorizontal(0,val) || checkVertical(2,val) || checkDiagonal(2,2,val);
+  // 		  break;
+  // 		case '4':
+  // 		  return checkHorizontal(3,val) || checkVertical(0,val);
+  // 		  break;
+  // 		case '5':
+  // 		  return checkHorizontal(3,val) || checkVertical(1,val) || checkDiagonal(2,2,val) || checkDiagonal(0,4,val);
+  // 		  break;  
+  // 		case '6':
+  // 		  return checkHorizontal(3,val) || checkVertical(2,val);
+  // 		  break;
+  // 		case '7':
+  // 		  return checkHorizontal(6,val) || checkVertical(0,val) || checkDiagonal(2,2,val);
+  // 		  break; 
+  // 		case '8':
+  // 		  return checkHorizontal(6,val) || checkVertical(1,val);
+  // 		  break;  		
+  // 		case '9':
+  // 		  return checkHorizontal(6,val) || checkVertical(2,val) || checkDiagonal(0,4,val);
+  // 		  break;  		
+  // 		default :
+  // 			return false; 
+  // 	} 
+  // }
+
+  function isWinning(board, val){
+    console.log(val);
+    if(
+      (board[0] == val && board[1] == val && board[2] == val) ||
+      (board[0] == val && board[3] == val && board[6] == val) ||
+      (board[0] == val && board[4] == val && board[8] == val) ||
+      (board[1] == val && board[4] == val && board[7] == val) ||
+      (board[2] == val && board[4] == val && board[6] == val) ||
+      (board[3] == val && board[4] == val && board[5] == val) ||
+      (board[6] == val && board[7] == val && board[8] == val) ||
+      (board[2] == val && board[5] == val && board[8] == val))
+      return true;
+
+    return false;
+
+
   }
 
   function switchVal(){
