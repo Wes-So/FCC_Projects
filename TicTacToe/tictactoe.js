@@ -40,7 +40,8 @@ $(function(){
   } 
    
   function getFirstPlayer(){
-    var num = Math.floor(Math.random() * 2) + 1; 
+    //var num = Math.floor(Math.random() * 2) + 1; 
+    var num = 2;
     var firstPlayer = num == 1?player1:player2;
     setIsTurnToTrue(firstPlayer); 
     getCurrentAndLastPlayers(); 
@@ -63,7 +64,7 @@ $(function(){
   	player2.name = 'CPU';
 	  $('#chooseText').text(text);
 	  switchMode(); 
-  }) 
+  })  
 
   $('#2p').click(function(){
   	$('#chooseText').text(player1.name + ' : ' +  text);
@@ -73,13 +74,13 @@ $(function(){
   //SECOND INTERFACE
   $('#X').click(function(){
   	updatePlayerVal('X','O');  	
-  	showBoard(); 
+  	showBoard();  
   }) 
 
   $('#O').click(function(){
   	updatePlayerVal('O','X');  	
-  	showBoard(); 
-  })
+  	showBoard();  
+  }) 
 
   function updatePlayerVal(x, y){
   	player1.val  = x;
@@ -88,20 +89,50 @@ $(function(){
 
   //THIRD INTERFACE
   $('.square').click(function(){  
-    if($('#' + this.id ).text() === '' && !isStopped){       
-	    $('#' + this.id ).text(currentPlayer.val);	  
-	    if(isWinning(getBoard(),currentPlayer.val)){
-	      updateScores();
- 	      message = currentPlayer.name + ' wins. Congratulations!!!';	  	 
-	  	  endOfRound(message);
-	    } else if(allFilled()){	     
-	      message = 'We got a draw...'; 	
- 	  	  endOfRound(message);
-	    } else {
-        switchVal();
-      } 
-  	}
+    if($('#' + this.id ).text() === '' && !isStopped){  
+      $('#' + this.id ).text(currentPlayer.val);    
+      if(isWinning(getBoard(),currentPlayer.val)){
+         updateScores();
+         message = currentPlayer.name + ' wins. Congratulations!!!';      
+         endOfRound(message);
+      } else if(allFilled()){      
+         message = 'We got a draw...';   
+         endOfRound(message);
+      } else {
+         switchVal();
+      }
+
+      setTimeout(function() {
+        processCPU();
+      }, 1000); 
+    } 
   })
+
+  function announceVictor(){
+    updateScores();
+    message = currentPlayer.name + ' wins. Congratulations!!!';      
+    endOfRound(message);
+  }
+
+  function processCPU(){
+    if(player2.name == 'CPU'){
+      var slots = getEmpties(getBoard());
+      var minmax = recurCPU(slots,player2);
+      //console.log(minmax);
+      if(minmax){
+        //announceVictor();
+      } else { 
+        console.log('now checking for human winning combo');
+        slots = getEmpties(getBoard());
+        var humanWins = recurCPU(slots,player1);
+        if(!humanWins){
+          var slot = getRandomSlot();         
+          $('#' + slot).text(currentPlayer.val); 
+        } 
+        switchVal();    
+      }
+    }
+  }
 
   function updateScores(){
     currentPlayer.score = currentPlayer.score + 1;
@@ -130,42 +161,7 @@ $(function(){
   }
 
   //logic code
-  // function isWinner(id,val){
-  // 	switch(id) {
-  // 		case '1':
-  // 		  return checkHorizontal(0,val) || checkVertical(0,val) || checkDiagonal(0,4,val);
-  // 		  break;
-  // 		case '2':
-  // 		  return checkHorizontal(0,val) || checkVertical(1,val);
-  // 		  break;
-  // 		case '3':
-  // 		  return checkHorizontal(0,val) || checkVertical(2,val) || checkDiagonal(2,2,val);
-  // 		  break;
-  // 		case '4':
-  // 		  return checkHorizontal(3,val) || checkVertical(0,val);
-  // 		  break;
-  // 		case '5':
-  // 		  return checkHorizontal(3,val) || checkVertical(1,val) || checkDiagonal(2,2,val) || checkDiagonal(0,4,val);
-  // 		  break;  
-  // 		case '6':
-  // 		  return checkHorizontal(3,val) || checkVertical(2,val);
-  // 		  break;
-  // 		case '7':
-  // 		  return checkHorizontal(6,val) || checkVertical(0,val) || checkDiagonal(2,2,val);
-  // 		  break; 
-  // 		case '8':
-  // 		  return checkHorizontal(6,val) || checkVertical(1,val);
-  // 		  break;  		
-  // 		case '9':
-  // 		  return checkHorizontal(6,val) || checkVertical(2,val) || checkDiagonal(0,4,val);
-  // 		  break;  		
-  // 		default :
-  // 			return false; 
-  // 	} 
-  // }
-
   function isWinning(board, val){
-    console.log(val);
     if(
       (board[0] == val && board[1] == val && board[2] == val) ||
       (board[0] == val && board[3] == val && board[6] == val) ||
@@ -177,9 +173,7 @@ $(function(){
       (board[2] == val && board[5] == val && board[8] == val))
       return true;
 
-    return false;
-
-
+    return false; 
   }
 
   function switchVal(){
@@ -190,33 +184,6 @@ $(function(){
     getCurrentAndLastPlayers();
     showPlayerName();    
   }
-
-  function checkHorizontal(idx,val){  
-	return checkWinner(idx,1,val);  
-  } 
-
-  function checkVertical(idx,val){  
-	return checkWinner(idx,3,val);  
-  }
-
-  function checkDiagonal(idx,icr,val){
-  	return checkWinner(idx,icr,val); 
-  }
-
-  function checkWinner(idx, icr, val){
-  	var cells = $('.square'); 
-  	var one = $('#' + cells[idx].id ) ;
-  	var two = $('#' + cells[idx + icr].id ) ;
-  	var three = $('#' + cells[idx + icr + icr].id);
-	  var result = one.html() === val && 
-                 two.html() === val && 
-                 three.html() === val;
-
-	  if(result) 
-		  highlightCells(one, two, three);	 
-
-	  return result;  	 
-  } 
 
   function allFilled() { 
     return  $(".square:empty").length === 0; 
@@ -246,7 +213,22 @@ $(function(){
     $('#scores').removeClass('not-visible');
     $('#scores').addClass('visible'); 
     showPlayerName();
+    aiFirstDraw();
   } 
+
+  function aiFirstDraw(){
+    if(currentPlayer.name == 'CPU'){
+      var randomSlot = getRandomSlot();
+      $('#' + randomSlot).text(currentPlayer.val); 
+      switchVal();       
+    }
+  }
+
+  function getRandomSlot(){
+    var slots = getEmpties(getBoard());
+    var random = Math.floor(Math.random() * slots.length) + 1;
+    return slots[random];
+  }
 
   function getCurrentAndLastPlayers(){
     currentPlayer = player1.isTurn ? player1 : player2;
@@ -255,7 +237,7 @@ $(function(){
 
   function showPlayerName(){
     getCurrentAndLastPlayers();
-    currentPlayer.turn.addClass("visible").removeClass('not-visible');
+    currentPlayer.turn.addClass("visible").removeClass('not-visible').text(currentPlayer.name);
     lastPlayer.turn.removeClass('not-visible').addClass('not-visible');
   }
 
@@ -271,5 +253,55 @@ $(function(){
   function getEmpties(board){
     return board.filter(s => s != 'O' && s!='X');
   }
+
+  function recurCPU(slots, player){ 
+    console.log(slots);
+    if(slots.length == 0){ 
+      return false;
+    } 
+    
+
+    var val = player.val;
+    var board = getBoard();
+    var slot = slots.shift() - 1; 
+    board[slot] = val; 
+    console.log(board);
+    if(isWinning(board,val)){
+      console.log('winning'); 
+      slot = slot + 1; 
+      $('#' + slot ).text(player2.val);  //call a method here  
+      return true;
+    } else {
+      return recurCPU(slots,player);
+    }   
+  } 
+
+  function checkHorizontal(idx,val){  
+  return checkWinner(idx,1,val);  
+  } 
+
+  function checkVertical(idx,val){  
+  return checkWinner(idx,3,val);  
+  }
+
+  function checkDiagonal(idx,icr,val){
+    return checkWinner(idx,icr,val); 
+  }
+
+  function checkWinner(idx, icr, val){
+    var cells = $('.square'); 
+    var one = $('#' + cells[idx].id ) ;
+    var two = $('#' + cells[idx + icr].id ) ;
+    var three = $('#' + cells[idx + icr + icr].id);
+    var result = one.html() === val && 
+                 two.html() === val && 
+                 three.html() === val;
+
+    if(result) 
+      highlightCells(one, two, three);   
+
+    return result;     
+  } 
+
 
 })
