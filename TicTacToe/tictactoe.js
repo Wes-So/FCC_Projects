@@ -1,47 +1,46 @@
-$(function(){
-   
+$(function(){ 
   var text = 'Would you like to be X or O?'; 
-  var isStopped = false;
+  var isStopped;
   var player1;
   var player2;
   var currentPlayer;
   var lastPlayer;
+  var doneGame;
+  var myBoard;
+
 
   initialize();
-
+   
   function initialize(){
-  	player1 = createPlayer(1);
-  	player2 = createPlayer(2); 
-    getFirstPlayer()
-	
-	  is1P = true;  
-	  isStopped=false;
-	
-	  $('#first').css('display','block');  
-	  $('#second').css('display','none');
-	  $('#message').css('display','none');
-    $('#board').css('display','none');
-    $('#scores').addClass('not-visible');
-    $('#player1').addClass('not-visible');
-    $('#player2').addClass('not-visible');
+    myBoard = new Board();
+    myBoard.initBoard();
+    console.log(myBoard.board)
+    player1 = createPlayer(1);
+    player2 = createPlayer(2); 
+    getFirstPlayer(); 
+       
+    isStopped=false;
+    doneGame = false;
+      
+    initializeStyle(); 
     redisplayScores();    
-    clearCells();
+    clearCells(); 
   } 
-
-  function createPlayer(name) {
-  	return {
-      id: name,
-    	name : 'Player ' + name,
-  		score : 0,
-  		val : '' ,
-      turn: $('#player' + name),
+  
+  function createPlayer(key) {
+    return {
+      id: key,
+      name : 'Player ' + key,
+      score : 0,
+      val : '' ,
+      turn: $('#player' + key),
       isTurn:false
     }
   } 
    
   function getFirstPlayer(){
     //var num = Math.floor(Math.random() * 2) + 1; 
-    var num = 2;
+    var num = 1;
     var firstPlayer = num == 1?player1:player2;
     setIsTurnToTrue(firstPlayer); 
     getCurrentAndLastPlayers(); 
@@ -51,109 +50,153 @@ $(function(){
     player.isTurn = true;
   }
 
+  //PLAY MODE SCREEN
+  $('#1p').click(function(){ 
+    player2.name = 'CPU';
+    $('#chooseText').text(text);
+    switchScreen(); 
+  })  
+
+  $('#2p').click(function(){
+    $('#chooseText').text(player1.name + ' : ' +  text);
+    switchScreen(); 
+  })
+
+   function switchScreen(){
+     $('#play_token').toggle();
+     $('#play_mode').toggle();    
+  }
+
+  //END OF PLAY MODE SCREEN
+
+  //PLAY TOKEN SCREEN
+  $('#X').click(function(){
+    setPlayerTokens('X'); 
+    showBoard();  
+  }) 
+
+  $('#O').click(function(){
+    setPlayerTokens('O');   
+    showBoard();  
+  }) 
+
+  function setPlayerTokens(player1Val){ 
+    player1.val  = player1Val;
+    player2.val = player1Val == 'X' ? 'O':'X';
+  }
+
+  $('#back').click(function(){
+    switchScreen();
+  })
+
+  //END OF PLAY TOKEN SCREEN
+
+  //BOARD INTERFACE
+  $('.square').click(function(){ 
+    if(isAllowedToPlay(this.id)){  
+       myBoard.updateBoard(this.id, myBoard.board);
+  
+      if(myBoard.isWinning()){ 
+         announceVictor();
+      } else if(myBoard.isAllFilled()){ 
+         announceDraw(); 
+      } else {
+         switchVal(); 
+      }
+      
+      if(!doneGame){
+        setTimeout(function() {
+          processCPU();
+        }, 1000); 
+      }
+
+      doneGame = false;
+    } 
+  }) 
+  
   $('#reset').click(function(){
   	initialize(); 
   }) 
 
-  $('#back').click(function(){
-  	switchMode();
-  })  
+  function isAllowedToPlay(id){
+    return currentPlayer.name != 'CPU' 
+      && ! isNaN(myBoard.board[id - 1]) 
+      && !isStopped;
+  } 
 
-  //FIRST INTERFACE
-  $('#1p').click(function(){ 
-  	player2.name = 'CPU';
-	  $('#chooseText').text(text);
-	  switchMode(); 
-  })  
-
-  $('#2p').click(function(){
-  	$('#chooseText').text(player1.name + ' : ' +  text);
-  	switchMode(); 
-  })
-
-  //SECOND INTERFACE
-  $('#X').click(function(){
-  	updatePlayerVal('X','O');  	
-  	showBoard();  
-  }) 
-
-  $('#O').click(function(){
-  	updatePlayerVal('O','X');  	
-  	showBoard();  
-  }) 
-
-  function updatePlayerVal(x, y){
-  	player1.val  = x;
-  	player2.val = y;
+  function makeAnnouncement(func){
+    func();
   }
 
-  //THIRD INTERFACE
-  $('.square').click(function(){  
-    if($('#' + this.id ).text() === '' && !isStopped){  
-      $('#' + this.id ).text(currentPlayer.val);    
-      if(isWinning(getBoard(),currentPlayer.val)){
-         updateScores();
-         message = currentPlayer.name + ' wins. Congratulations!!!';      
-         endOfRound(message);
-      } else if(allFilled()){      
-         message = 'We got a draw...';   
-         endOfRound(message);
-      } else {
-         switchVal();
-      }
+  function announceDraw(){
+    endOfRound('We got a draw...');
+  }
 
-      setTimeout(function() {
-        processCPU();
-      }, 1000); 
-    } 
-  })
-
-  function announceVictor(){
-    updateScores();
+  function announceVictor(){ 
+    currentPlayer.score++;
     message = currentPlayer.name + ' wins. Congratulations!!!';      
-    endOfRound(message);
+    endOfRound(message); 
   }
+
+  function endOfRound(message){
+    doneGame = true;
+    isStopped = true;
+    myBoard.initBoard();
+    setTimeout(function() { 
+     $('#message').text(message);
+     $('#message').toggle();
+     $('table').addClass('transparent');
+     redisplayScores();     
+     setTimeout(function() {
+          $('#message').toggle(); 
+            clearCells();
+            isStopped=false
+            $('table').removeClass('transparent');
+            switchVal();
+            aiFirstDraw();  
+        }, 2000); 
+    }, 1000);
+     
+  }
+
+
+
 
   function processCPU(){
     if(player2.name == 'CPU'){
+      isStopped = true;
+ 
       var slots = getEmpties(getBoard());
       var minmax = recurCPU(slots,player2);
-      //console.log(minmax);
+ 
       if(minmax){
-        //announceVictor();
-      } else { 
-        console.log('now checking for human winning combo');
+        announceVictor();
+      } else {
         slots = getEmpties(getBoard());
-        var humanWins = recurCPU(slots,player1);
+        var humanWins = recurCPU(slots,player1); 
         if(!humanWins){
-          var slot = getRandomSlot();         
-          $('#' + slot).text(currentPlayer.val); 
-        } 
-        switchVal();    
+          var slot = getRandomSlot();  
+          console.log("Random slot:=" + slot);       
+          $('#' + slot).text(currentPlayer.val) 
+        }
+
+
+        if(allFilled()){
+          announceDraw();
+        } else {
+          switchVal();  
+        }
+
+         
+            
       }
+      isStopped = false;
     }
   }
 
   function updateScores(){
     currentPlayer.score = currentPlayer.score + 1;
-  }
-
-  function endOfRound(message){
-  	isStopped = true;
-	  setTimeout(function() { 
-	   $('#message').text(message);
-	   $('#message').toggle();
-	   $('table').addClass('transparent');
-     redisplayScores();			
-     setTimeout(function() {
-          $('#message').toggle(); 
-     	      clearCells();
-     	      isStopped=false
-     	      $('table').removeClass('transparent');
-            switchVal();  
-		    }, 2000); 
-	  }, 2000);	
-  }
+  } 
  
   function redisplayScores(){
     $('#onePscore').text(player1.score);
@@ -182,7 +225,7 @@ $(function(){
     lastPlayer = currentPlayer.id == 1 ? player2 : player1;
     lastPlayer.isTurn = false;
     getCurrentAndLastPlayers();
-    showPlayerName();    
+    showPlayerName(); 
   }
 
   function allFilled() { 
@@ -190,6 +233,45 @@ $(function(){
   }
 
   //accessory functions
+  function Board() {
+      var board = []; 
+
+      var initBoard = function(){
+        for(var i = 0; i <9; i++){
+         this.board.push(i+1);
+       }
+      };
+      
+      var updateBoard = function(id){
+        $('#'  + id ).text(currentPlayer.val);
+        this.board[id - 1] = currentPlayer.val; 
+      };
+
+      var getBoard = function(){
+        return this.board();
+      };
+
+      var isAllFilled = function() {
+        return (this.board.filter(s => s != 'O' && s!='X')).length === 0; 
+      }; 
+ 
+      var isWinning = function(){
+        var val = currentPlayer.val; 
+        if(
+          (this.board[0] == val && this.board[1] == val && this.board[2] == val) ||
+          (this.board[0] == val && this.board[3] == val && this.board[6] == val) ||
+          (this.board[0] == val && this.board[4] == val && this.board[8] == val) ||
+          (this.board[1] == val && this.board[4] == val && this.board[7] == val) ||
+          (this.board[2] == val && this.board[4] == val && this.board[6] == val) ||
+          (this.board[3] == val && this.board[4] == val && this.board[5] == val) ||
+          (this.board[6] == val && this.board[7] == val && this.board[8] == val) ||
+          (this.board[2] == val && this.board[5] == val && this.board[8] == val))
+          return true;
+
+        return false; 
+       };
+     } 
+
   function highlightCells(one, two, three){ 
     one.css('color', '#4a8cf7');
    	two.css('color', '#4a8cf7');
@@ -200,15 +282,10 @@ $(function(){
     $('.square').map(function(){
       $('#' + this.id).text(''); 
     }) 
-  }
-
-  function switchMode(){
-  	 $('#second').toggle();
-  	 $('#first').toggle();   	
-  }
+  } 
 
   function showBoard(){
-  	$('#second').toggle();
+  	$('#play_token').toggle();
    	$('#board').toggle();  
     $('#scores').removeClass('not-visible');
     $('#scores').addClass('visible'); 
@@ -226,7 +303,8 @@ $(function(){
 
   function getRandomSlot(){
     var slots = getEmpties(getBoard());
-    var random = Math.floor(Math.random() * slots.length) + 1;
+    console.log(slots);
+    var random = Math.floor(Math.random() * slots.length);
     return slots[random];
   }
 
@@ -254,9 +332,8 @@ $(function(){
     return board.filter(s => s != 'O' && s!='X');
   }
 
-  function recurCPU(slots, player){ 
-    console.log(slots);
-    if(slots.length == 0){ 
+  function recurCPU(slots, player){
+     if(slots.length == 0){ 
       return false;
     } 
     
@@ -265,9 +342,8 @@ $(function(){
     var board = getBoard();
     var slot = slots.shift() - 1; 
     board[slot] = val; 
-    console.log(board);
+    
     if(isWinning(board,val)){
-      console.log('winning'); 
       slot = slot + 1; 
       $('#' + slot ).text(player2.val);  //call a method here  
       return true;
@@ -303,5 +379,21 @@ $(function(){
     return result;     
   } 
 
+  function isEmptySquare(square){
+    return $('#' + square ).text() === '';
+  }
 
+  function hasWon(symbol){
+    return isWinning(getBoard(),symbol);
+  }
+
+  function initializeStyle(){
+    $('#play_mode').css('display','block');  
+    $('#play_token').css('display','none');
+    $('#message').css('display','none');
+    $('#board').css('display','none');
+    $('#scores').addClass('not-visible');
+    $('#player1').addClass('not-visible');
+    $('#player2').addClass('not-visible');
+  }
 })
