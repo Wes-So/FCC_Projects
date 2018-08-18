@@ -3,24 +3,42 @@
 
 body {
 	font-family: 'Raleway',sans-serif;
+
 }
 
-h1{
+h1 {
 	font-family: 'Rubik One', sans-serif; 
-	font-size: 50px;
+	font-size: 30px;
+	text-align: center;
+} 
+
+h2 {
 	text-align: center;
 }
 
-h2{
-	text-align:center;
+img {
+	max-width: 100%;
+	display: block;
+	height: auto;
 }
 
-p{
+#img-caption {
 	text-align: center;
+}
+
+#img-div {
+	border: 10 10 10 10
+	text-align: center;
+	background-color: white;
 }
 
 #main{
 	background-color:#f7d791;
+}
+
+main {
+	padding-left: 20px;
+	padding-right: 20px;
 }
 
 .container{
